@@ -1,0 +1,18 @@
+unset label; unset arrow
+set xdata time
+set timefmt "%H:%M:%S";
+set format x "%H:%M:%S"
+set xlabel "Simulated time"
+set ylabel "UDP traffic up (bytes/second)"
+set datafile separator "|"
+set label "peer-join-exp-churn"  at first "00:10:00", graph 1.03 tc rgb "#EE7A34"
+set arrow from first "00:10:00", graph 0 to first "00:10:00", graph 1.0 lc rgb "#EE7A34"
+set label "leave50"  at first "02:00:00", graph 1.03 tc rgb "#EE7A34"
+set arrow from first "02:00:00", graph 0 to first "02:00:00", graph 1.0 lc rgb "#EE7A34"
+set label "join50"  at first "03:00:00", graph 1.03 tc rgb "#EE7A34"
+set arrow from first "03:00:00", graph 0 to first "03:00:00", graph 1.0 lc rgb "#EE7A34"
+set label "crash50"  at first "04:00:00", graph 1.03 tc rgb "#EE7A34"
+set arrow from first "04:00:00", graph 0 to first "04:00:00", graph 1.0 lc rgb "#EE7A34"
+set xrange;
+set yrange]
+plot '<sqlite3 C:/Users/MaribelZamorano/Desktop/du.db "SELECT time(time), sum/count, (count*sum2-sum*sum)/(count*count) as var  FROM measurements JOIN statistics ON measurements.statistic=statistics.id WHERE statistics.name=\"simulator/UDP traffic up\" and node=-1"' using 1:2:(sqrt($3)) with errorbars ls 9 notitle,  '<sqlite3 C:/Users/MaribelZamorano/Desktop/du.db "SELECT time(time), max, min FROM measurements JOIN statistics ON measurements.statistic=statistics.id WHERE statistics.name=\"simulator/UDP traffic up\" and node=-1"' using 1:2 w lines title "Max.simulator/UDP traffic up", '<sqlite3 C:/Users/MaribelZamorano/Desktop/du.db "SELECT time(time), max, min FROM measurements JOIN statistics ON measurements.statistic=statistics.id WHERE statistics.name=\"simulator/UDP traffic up\" and node=-1"' using 1:3 w lines title "Min.simulator/UDP traffic up", '<sqlite3 C:/Users/MaribelZamorano/Desktop/du.db "SELECT time(time), sum/count, (count*sum2-sum*sum)/(count*count) as var  FROM measurements JOIN statistics ON measurements.statistic=statistics.id WHERE statistics.name=\"simulator/UDP traffic up\" and node=-1"' using 1:2 w lines title "simulator/UDP traffic up"

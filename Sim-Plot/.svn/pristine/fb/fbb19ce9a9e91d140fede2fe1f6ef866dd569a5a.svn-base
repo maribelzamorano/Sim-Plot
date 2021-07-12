@@ -1,0 +1,193 @@
+<class-diagram version="1.0.9" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.TreeLabel" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/TreeLabel.java" binary="false">    
+    <position height="157" width="186" x="1568" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.Tree" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/Tree.java" binary="false">    
+    <position height="225" width="358" x="223" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.SplitContainer" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/SplitContainer.java" binary="false">    
+    <position height="50" width="142" x="41" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.SimDBUI" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/SimDBUI.java" binary="false">    
+    <position height="157" width="182" x="621" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.SimDBReader" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/SimDBReader.java" binary="false">    
+    <position height="50" width="142" x="223" y="499"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.PlotCommand" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/PlotCommand.java" binary="false">    
+    <position height="157" width="482" x="1072" y="499"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.OptionsContainer" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/OptionsContainer.java" binary="false">    
+    <position height="208" width="186" x="621" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.Graphic" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/Graphic.java" binary="false">    
+    <position height="208" width="456" x="1072" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.GnuplotProcess" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/GnuplotProcess.java" binary="false">    
+    <position height="157" width="158" x="874" y="499"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.Document" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/Document.java" binary="false">    
+    <position height="50" width="142" x="1594" y="499"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="11" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.DBTreeList" project="Sim-Plot" 
+    file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/DBTreeList.java" binary="false">    
+    <position height="123" width="173" x="225" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="12" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.DatabasesTree" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/DatabasesTree.java" binary="false">    
+    <position height="140" width="185" x="847" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.CheckRenderer" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/CheckRenderer.java" binary="false">    
+    <position height="50" width="142" x="1568" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="de.tudarmstadt.dvs.p4.simdb.ActionHistoryList" 
+    project="Sim-Plot" file="/Sim-Plot/src/de/tudarmstadt/dvs/p4/simdb/ActionHistoryList.java" binary="false">    
+    <position height="89" width="204" x="1072" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association id="15">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="16" name="plotCommand"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="18">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="19">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="20" name="reader"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="23" name="label"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="26" name="graphic"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="tree"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="32">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="33" name="graphic"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="36">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="37" name="gp"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

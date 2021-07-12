@@ -1,0 +1,530 @@
+package de.tudarmstadt.dvs.p4.simdb;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+/**
+ * The Class PlotCommand creates the command that gnuplot receives.
+ */
+public class PlotCommand {
+
+	/** The database. */
+	private static String database;
+
+	/** The statistics sent to history list. */
+	private static String statisticsToHistory;
+
+	/** The line separator value. */
+	private static String n = System.getProperty("line.separator");
+
+	/** The y label. */
+	private static String yLabel;
+
+	/** The seconds used in case of aggregation. */
+	private static int seconds;
+	
+	/** The boolean value if the function "different Y scales" is enabled.*/
+	private static boolean yScales;
+	
+	
+
+	/**
+	 * Instantiates a new plot command.
+	 * @throws SimDBException the sim db exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SQLException the sQL exception
+	 */
+	public PlotCommand() throws SimDBException, IOException, SQLException {
+		super();
+	}
+
+	/**
+	 * Gets the plot command.
+	 * @param StatisticId the statistic id
+	 * @param minMax the min max
+	 * @param aggregate the aggregate
+	 * @param errorBars the error bars
+	 * @param several the several
+	 * @param YDifferentScales the y different scales
+	 * @param Imported the imported
+	 * @return the plot command
+	 * @throws SimDBException the sim db exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SQLException the sQL exception
+	 */
+	public String getPlotCommand(String StatisticId, boolean minMax,
+			final boolean aggregate, boolean errorBars, boolean several,
+			boolean YDifferentScales, boolean Imported) throws SimDBException,
+			IOException, SQLException {
+
+		ResultSet rLabel = null;
+		String s = "";
+		setStatisticsToHistory("");
+		List<String> statisticName = null;
+		setyScales(YDifferentScales);
+		
+		if (several == true) {
+			statisticName = getStatisticName(several, YDifferentScales,
+					StatisticId);
+			s += n;
+			// String emptyStatistics = null;
+			String multiQuery = "";
+			setyLabel("several@");
+			String severalQuerys = "";
+
+			for (int i = 0; i < statisticName.size(); i++) {
+				int index = statisticName.get(i).indexOf("=");
+				if (index < 0) {
+					continue;
+				}
+				setDatabase(statisticName.get(i).substring(0, index));
+				String statistic = statisticName.get(i).substring(index + 1);
+				setStatisticsToHistory(getStatisticsToHistory()
+						+ (statistic + ";"));
+				SimDBReader reader = new SimDBReader(getDatabase());
+				DBQuery dbQuery = new DBQuery();
+
+				if (statisticName.get(i).contains(",")) {
+					int index2 = statisticName.get(i).indexOf(",");
+					int statisticId = Integer.parseInt(statistic.substring(0,
+							index2).trim());
+					if (aggregate == true) {
+						if (Imported = false) {
+							seconds = Integer
+									.parseInt(SimDBUI.getAggregateTextField()
+											.getText());
+						}
+						dbQuery.setSeveralAggregateStatisticsQuery(statisticId,
+								seconds);
+						severalQuerys += dbQuery
+								.getSeveralAggregateStatisticsQuery() + ";";
+					} else {
+						dbQuery.setSeveralStatisticsQuery(statisticId);
+						severalQuerys += dbQuery.getSeveralStatisticsQuery()
+								+ ";";
+					}
+
+					rLabel = reader.selectLabelByStatisticId(statisticId);
+
+				} else {
+					if (aggregate == true) {
+						int seconds = Integer
+								.parseInt(SimDBUI.getAggregateTextField().getText());
+						dbQuery.setGroupNodeSeveralAggregateStatisticsQuery(
+								statistic, seconds);
+						severalQuerys += dbQuery
+								.getGroupNodeSeveralAggregateStatisticsQuery()
+								+ ";";
+
+					} else {
+						dbQuery.setGroupNodeSeveralStatisticsQuery(statistic);
+						severalQuerys += dbQuery
+								.getGroupNodeSeveralStatisticsQuery() + ";";
+					}
+
+					rLabel = reader.selectLabelByStatisticName(statistic);
+				}
+
+				new Graphic();
+				setyLabel(getyLabel() + (Graphic.getYLabel(readResultSet(rLabel)) + "/"));
+
+			}
+
+			int index0 = statisticName.get(0).indexOf("=");
+			String[] query = severalQuerys.split(";");
+			String databaseCero = statisticName.get(0).substring(0, index0);
+
+			if (YDifferentScales == true) {
+				
+				s = "set ytics" + n;
+				s += "set y2tics" + n;
+				int index1 = statisticName.get(1).indexOf("=");
+				String databaseOne = statisticName.get(1).substring(0, index1);
+				multiQuery = "plot '<sqlite3 " + databaseCero + " \""
+						+ query[0] + "\"' using 1:2 w lines title \""
+						+ statisticName.get(0).substring(index0 + 1)
+						+ "\" axis x1y1, '<sqlite3 " + databaseOne + " \""
+						+ query[1] + "\"' using 1:2 w lines title \""
+						+ statisticName.get(1).substring(index1 + 1)
+						+ "\" axis x1y2";
+				
+			} else {
+
+				multiQuery = "plot '<sqlite3 " + databaseCero + " \""
+						+ query[0] + "\"' using 1:2 w lines title \""
+						+ statisticName.get(0).substring(index0 + 1) + "\"";
+
+				for (int ii = 1; ii < statisticName.size(); ii++) {
+					int indexI = statisticName.get(ii).indexOf("=");
+					String statisticDatabase = statisticName.get(ii).substring(
+							0, indexI);
+					multiQuery += ", '<sqlite3 " + statisticDatabase + " \""
+							+ query[ii] + "\"' using 1:2 w lines title \""
+							+ statisticName.get(ii).substring(indexI + 1)
+							+ "\"";
+				}
+			}
+
+			/*
+			 * String readerResult = readResultSet(r); if
+			 * (readerResult.contains(",") == false) { if (i > 0) {
+			 * emptyStatistics += "  " + statistic; } else { emptyStatistics =
+			 * statistic; } } else { if (i > 0) { emptyStatistics +=
+			 * "NOT-EMPTY"; } else { emptyStatistics = "NOT-EMPTY"; } } s +=
+			 * readerResult; s += "e" + n; } if
+			 * (emptyStatistics.contains("NOT-EMPTY") == false) {
+			 * ShowMessageDialog(emptyStatistics); return null; } else {
+			 * emptyStatistics = emptyStatistics.replaceAll("NOT-EMPTY", ""); if
+			 * (emptyStatistics.length() > 3) {
+			 * ShowMessageDialog(emptyStatistics); }
+			 */
+
+			s += multiQuery;
+			s += n;
+
+		} else {
+			int index = StatisticId.indexOf("=");
+			setDatabase(StatisticId.substring(0, index));
+			String query = "";
+			String minMaxQuery = "";
+			SimDBReader reader = new SimDBReader(getDatabase());
+
+			DBQuery dbQuery = new DBQuery();
+
+			if (StatisticId.contains(",") == true) {
+				int index3 = StatisticId.indexOf(",");
+
+				String statistic = StatisticId.substring(0, index3).trim()
+						.substring(index + 1);
+				setStatisticsToHistory(statistic);
+
+				int statisticId = Integer.parseInt(statistic);
+
+				if (aggregate == true) {
+					int seconds = Integer.parseInt(SimDBUI.getAggregateTextField()
+							.getText());
+					dbQuery.setAggregateStatisticsQuery(statisticId, seconds);
+					query = dbQuery.getAggregateStatisticsQuery();
+
+				} else {
+					dbQuery.setStatisticsQuery(statisticId);
+					query = dbQuery.getStatisticsQuery();
+
+				}
+
+				rLabel = reader.selectLabelByStatisticId(statisticId);
+
+				if (minMax == true) {
+					dbQuery.setMinMaxStatisticsQuery(StatisticId.substring(
+							index).trim());
+					query = dbQuery.getMinMaxStatisticsQuery();
+
+				}
+
+				StatisticId = StatisticId.substring(index + 1);
+
+			} else {
+
+				StatisticId = StatisticId.substring(index + 1);
+				setStatisticsToHistory(StatisticId);
+				int seconds = 0;
+
+				if (aggregate == true) {
+					seconds = Integer.parseInt(SimDBUI.getAggregateTextField()
+							.getText());
+					dbQuery.setGroupNodeAggregateStatisticsQuery(StatisticId,
+							seconds);
+					query = dbQuery.getGroupNodeAggregateStatisticsQuery();
+
+				} else {
+
+					dbQuery.setGroupNodeStatisticsQuery(StatisticId);
+
+					query = dbQuery.getGroupNodeStatisticsQuery();
+
+				}
+
+				rLabel = reader.selectLabelByStatisticName(StatisticId);
+
+				if (minMax == true) {
+					if (aggregate == true) {
+						dbQuery.setGroupNodeAggregateMinMaxStatisticsQuery(
+								StatisticId, seconds);
+						minMaxQuery = dbQuery
+								.getGroupNodeAggregateMinMaxStatisticsQuery();
+
+					} else {
+						dbQuery.setGroupNodeMinMaxStatisticsQuery(StatisticId);
+
+						minMaxQuery = dbQuery
+								.getGroupNodeMinMaxStatisticsQuery();
+
+					}
+				}
+			}
+
+			setyLabel(readResultSet(rLabel));
+
+			// if (readerResult.contains(",") == false) {
+			// ShowMessageDialog(StatisticId);
+			// return null;
+			// } else {
+
+			if (errorBars == false) {
+
+				s = "plot '<sqlite3 " + getDatabase() + " \"" + query
+						+ "\"' using 1:2 w lines title \"" + StatisticId + "\"";
+
+			} else {
+
+				s = "plot '<sqlite3 " + getDatabase() + " \"" + query
+						+ "\"' using 1:2 w lines title \"" + StatisticId + "\"";
+				s += ", \"\" using 1:2:(sqrt($3)) with errorbars ls 9 notitle \"";
+
+			}
+
+			if (minMax == false) {
+				s += n;
+
+			} else {
+				if (errorBars == true) {
+					s = "plot '<sqlite3 "
+							+ getDatabase()
+							+ " \""
+							+ query
+							+ "\"' using 1:2:(sqrt($3)) with errorbars ls 9 notitle, ";
+				} else {
+					s = "plot";
+				}
+				s += " '<sqlite3 " + getDatabase() + " \"" + minMaxQuery
+						+ "\"' using 1:2 w lines title \"Max." + StatisticId
+						+ "\"";
+
+				s += ", '<sqlite3 " + getDatabase() + " \"" + minMaxQuery
+						+ "\"' using 1:3 w lines title \"Min." + StatisticId
+						+ "\"";
+				s += ", '<sqlite3 " + getDatabase() + " \"" + query
+						+ "\"' using 1:2 w lines title \"" + StatisticId + "\""
+						+ n;
+
+			}
+
+		}
+		rLabel.close();
+		return s;
+
+	}
+
+	/**
+	 * Read result set.
+	 * @param rs
+	 * @return a formatted string containing the data of the result set
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	protected static String readResultSet(final ResultSet rs) throws SQLException,
+			IOException {
+		String results = "";
+		@SuppressWarnings("unused")
+		int rowcount = 0;
+		int colCount = rs.getMetaData().getColumnCount();
+
+		final String n = System.getProperty("line.separator");
+		while (rs.next()) {
+			for (int i = 0; i < colCount; i++) {
+				if (i > 0) {
+					Object value = rs.getObject(i + 1);
+					if (value == null || rs.wasNull()) {
+						results = "NULL";
+					} else {
+						if (colCount == 3) {
+							results += rs.getString(1) + "," + rs.getString(2)
+									+ "," + rs.getString(3) + n;
+						} else {
+
+							results += rs.getString(1) + "," + rs.getString(2)
+									+ n;
+						}
+					}
+				}
+			} // end of column. loop to next column.
+
+			rowcount++;
+		} // End of current row. loop to next row.
+
+		rs.close();
+		return results;
+
+	}
+
+	/**
+	 * Gets the statistic name.
+	 * @param several the several
+	 * @param yDifferentScales the y different scales
+	 * @param statisticId the statistic id
+	 * @return the statistic name
+	 */
+	public final List<String> getStatisticName(final boolean several,
+			final boolean yDifferentScales, final String statisticId) {
+		List<String> statisticName = new ArrayList<String>();
+		if (several == true) {
+
+			String[] statistics = statisticId.split(";");
+
+			if (statistics[0].contains(",") == true) {
+				int index = statistics[0].indexOf(",") + 1;
+				statisticName.add(0, statistics[0].substring(index));
+			} else {
+
+				statisticName.add(0, statistics[0]);
+			}
+
+			if (yDifferentScales == true) {
+				if (statistics[1].contains(",")) {
+
+					int index = statistics[1].indexOf(",");
+
+					statisticName.add(1, statistics[1].substring(index + 1));
+				} else {
+
+					statisticName.add(1, statistics[1]);
+				}
+			} else {
+
+				for (int i = 1; i < statistics.length; i++) {
+
+					if (statistics[i].contains(",")) {
+						int index = statistics[i].indexOf(",");
+						statisticName
+								.add(i, statistics[i].substring(index + 1));
+					} else {
+						statisticName.add(i, statistics[i]);
+					}
+				}
+			}
+
+		}
+
+		return statisticName;
+
+	}
+
+	/**
+	 * Creates a command to set gnuplot properties.
+	 * @param preCommand the pre command
+	 * @param imported the imported
+	 * @return the string
+	 * @throws SimDBException the sim db exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SQLException the sQL exception
+	 */
+	public final String prepareCommand(final String preCommand, final boolean imported)
+			throws SimDBException, IOException, SQLException {
+
+		int index = preCommand.indexOf("&");
+		String historyPrepare = preCommand.substring(0, index);
+
+		String historyCommand = preCommand.substring(index + 1);
+		String[] values = historyCommand.split(",");
+		String statisticId = values[0];
+
+		boolean historyMinMax = Boolean.parseBoolean(values[1]);
+		boolean historyAggregate;
+		if (values[2].contains("/")) {
+			int indexSeconds = values[2].indexOf("/");
+			historyAggregate = Boolean.parseBoolean(values[2].substring(0,
+					indexSeconds));
+			seconds = Integer.parseInt(values[2].substring(indexSeconds + 1));
+		} else {
+			historyAggregate = Boolean.parseBoolean(values[2]);
+		}
+		boolean historyErrorBars = Boolean.parseBoolean(values[3]);
+		boolean historySeveral = Boolean.parseBoolean(values[4]);
+		boolean historyYdifferentScales = Boolean.parseBoolean(values[5]);
+		String command = getPlotCommand(statisticId, historyMinMax,
+				historyAggregate, historyErrorBars, historySeveral,
+				historyYdifferentScales, imported);
+
+		SimDBReader reader = new SimDBReader(getDatabase());
+		String label = readResultSet(reader.selectUpperLabel());
+		label = Graphic.formatLabel(label);
+		String s = "unset label; unset arrow" + n;
+		s += "set xdata time" + n;
+		s += "set timefmt \"%H:%M:%S\";" + n + "set format x \"%H:%M:%S\"" + n;
+		s += "set xlabel \"Simulated time\"" + n;
+		if(isyScales()==true)
+		{
+			int indexYLabels=getyLabel().indexOf("/");
+			String yLabel1=getyLabel().substring(8,indexYLabels);
+			String yLabel2=getyLabel().substring((indexYLabels+1),(getyLabel().length()-1));
+			setyLabel("set ylabel '"+yLabel1+"';set y2label '"+yLabel2+"';");
+			s += getyLabel() + n;
+		}
+		else
+		{
+			s += "set ylabel \"" + Graphic.getYLabel(getyLabel()) + "\"" + n;
+		}
+		s += "set datafile separator \"|\"" + n;
+		s += "set term wxt persist" + n;
+		s += label;
+		if (historyPrepare.contains("xrange")) {
+			String[] settingsHistory = historyPrepare.split("%");
+			String grid = settingsHistory[0];
+			String range = settingsHistory[1];
+			s += grid + n + range + n;
+
+		}
+
+		s += command;
+
+		return s;
+	}
+
+	/**
+	 * Show message dialog in case of an empty statistic.
+	 * @param statisticId
+	 */
+	public void showMessageDialog(final String statisticId) {
+		JOptionPane.showMessageDialog(null, "Empty statistic: '" + statisticId
+				+ "'", "Empty measurements", 1);
+
+	}
+
+	public static String getStatisticsToHistory() {
+		return statisticsToHistory;
+	}
+
+	public static void setStatisticsToHistory(String statisticsToHistory) {
+		PlotCommand.statisticsToHistory = statisticsToHistory;
+	}
+
+	public static String getDatabase() {
+		return database;
+	}
+
+	public static void setDatabase(String database) {
+		PlotCommand.database = database;
+	}
+
+	public static String getyLabel() {
+		return yLabel;
+	}
+
+	public static void setyLabel(String yLabel) {
+		PlotCommand.yLabel = yLabel;
+	}
+
+	public static boolean isyScales() {
+		return yScales;
+	}
+
+	public static void setyScales(boolean yScales) {
+		PlotCommand.yScales = yScales;
+	}
+
+}
